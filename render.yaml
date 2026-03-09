@@ -1,0 +1,50 @@
+services:
+  # Backend API Service
+  - type: web
+    name: investprop-backend
+    env: node
+    region: frankfurt
+    plan: starter
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm run start:prod
+   healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: investprop-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CORS_ORIGIN
+        sync: false
+
+  # Frontend Service
+  - type: web
+    name: investprop-frontend
+    env: static
+    region: frankfurt
+    plan: starter
+    buildCommand: cd 1 && npm install && npm run build
+    publishDir:1/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: investprop-backend
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: VITE_APP_NAME
+        value: InvestProp
+
+databases:
+  - name: investprop-db
+    databaseName: investprop
+    user: investprop_user
+    plan: starter
+    region: frankfurt
+    ipAllowList: []
