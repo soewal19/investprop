@@ -5,9 +5,9 @@ services:
     env: node
     region: frankfurt
     plan: starter
-     rootDir: backend
-    buildCommand: npm install && npm run build
-    startCommand: npm run start:prod
+    rootDir: backend
+   buildCommand: npm install && npm run build
+   startCommand: npm run start:prod
    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
@@ -31,9 +31,9 @@ services:
     env: static
     region: frankfurt
     plan: starter
-     rootDir: ./
-  buildCommand: npm install && npm run build
-   publishDir: dist
+    rootDir: ./
+   buildCommand: npm install && npm run build
+    publishDir: dist
     envVars:
       - key: VITE_API_URL
         fromService:
