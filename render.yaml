@@ -31,7 +31,7 @@ services:
     env: static
     region: frankfurt
     plan: starter
-    rootDir: ./
+    rootDir:1
    buildCommand: npm install && npm run build
     publishDir: dist
     envVars:
